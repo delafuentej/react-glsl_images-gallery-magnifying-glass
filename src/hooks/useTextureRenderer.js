@@ -3,7 +3,7 @@
 
 // src/hooks/useTextureRenderer.js
 export function useTextureRenderer() {
-  // cachear canvas temporal
+  //cachear canvas temporal
   const tempCanvas = document.createElement("canvas");
   const tempCtx = tempCanvas.getContext("2d");
 
@@ -12,11 +12,11 @@ export function useTextureRenderer() {
   function updateTexture(gl, container, texture) {
     if (!container) return;
 
-    // dimensiones
+    //dimensiones
     const w = Math.floor(window.innerWidth * scale);
     const h = Math.floor(window.innerHeight * scale);
 
-    // evitar realocar si no es necesario
+    //evitar realocar si no es necesario
     if (tempCanvas.width !== w) tempCanvas.width = w;
     if (tempCanvas.height !== h) tempCanvas.height = h;
 
@@ -25,13 +25,13 @@ export function useTextureRenderer() {
     tempCtx.fillStyle = "white";
     tempCtx.fillRect(0, 0, w, h);
 
-    // obtener transform real aplicando la matriz actual
+    //obtener transform real aplicando la matriz actual
     const style = getComputedStyle(container);
     const matrix = new DOMMatrix(
       style.transform === "none" ? undefined : style.transform
     );
 
-    // aplicar transform (sin duplicar rect offset)
+    //aplicar transform (sin duplicar rect offset)
     tempCtx.setTransform(
       matrix.a,
       matrix.b,
@@ -41,7 +41,7 @@ export function useTextureRenderer() {
       matrix.f * scale
     );
 
-    // dibujar imágenes
+    //dibujar imágenes
     const viewport = container.getBoundingClientRect();
     const images = container.getElementsByTagName("img");
 
@@ -60,7 +60,7 @@ export function useTextureRenderer() {
     // reset transform
     tempCtx.setTransform(1, 0, 0, 1, 0, 0);
 
-    // subir textura a WebGL
+    //subir textura a WebGL
     gl.bindTexture(gl.TEXTURE_2D, texture);
     gl.texImage2D(
       gl.TEXTURE_2D,
@@ -79,7 +79,7 @@ export function useTextureRenderer() {
 
   return { updateTexture };
 }
-
+//
 // export function useTextureRenderer() {
 // function updateTexture(gl, container, texture) {
 // if (!container) return;
@@ -140,4 +140,5 @@ export function useTextureRenderer() {
 //
 // return { updateTexture };
 // }
+//
 //

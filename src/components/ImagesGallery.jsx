@@ -21,7 +21,9 @@ const ImagesGallery = ({ onContainerReady }) => {
       wrapper.className = "img-wrapper";
 
       const img = document.createElement("img");
-      img.src = getRandomImage();
+      const src = getRandomImage();
+      img.src = src;
+      img.alt = src.split("/").pop().replace(".webp", "");
       wrapper.appendChild(img);
 
       container.appendChild(wrapper);
