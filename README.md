@@ -1,18 +1,39 @@
-# React + Vite
+# Interactive WebGL image gallery with magnifying glass effect using GLSL shaders.
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+## Overview
 
-Currently, two official plugins are available:
+This project is a **React + Vite** application that displays a gallery of images.
+A WebGL-powered magnifying glass follows the cursor, creating a **zoomed, distorted view** with chromatic aberration.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+![Preview](./preview.gif)
 
-## React Compiler
+- **300 images** arranged in a pseudo-random grid.
+- **Magnifying glass** with GLSL shaders:
+  - Zoom and distortion
+  - Chromatic aberration effect
+- **Smooth camera pan** following mouse movement.
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+---
 
-## Expanding the ESLint configuration
+## Features
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+- React components:
+  - `ImagesGallery`: generates the image grid.
+  - `WebGLCanvas`: renders the magnifying glass effect using WebGL shaders.
+- Custom hooks:
+  - `useWebGLCanvas`: manages shaders, uniforms, RAF loop.
+  - `useTextureRenderer`: converts DOM images into WebGL texture.
+  - `useMouse`: smooth mouse tracking.
+  - `useShaders`: provides vertex and fragment shaders.
+  - `useWebGLProgram`: shader compilation and program linking.
 
-# react-glsl_images-gallery-magnifying-glass
+---
+
+## Installation
+
+```bash
+git clone https://github.com/delafuentej/react-glsl_images-gallery-magnifying-glass.git
+cd react-glsl_images-gallery-magnifying-glass
+npm install
+npm run dev
+```
