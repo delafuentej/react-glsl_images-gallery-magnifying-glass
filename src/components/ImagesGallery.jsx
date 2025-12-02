@@ -2,6 +2,7 @@ import React, { useEffect, useRef } from "react";
 
 const ImagesGallery = ({ onContainerReady }) => {
   const containerRef = useRef(null);
+  const rafRef = useRef(null); //- ref to store the RAF ID
 
   useEffect(() => {
     const container = containerRef.current;
@@ -19,13 +20,11 @@ const ImagesGallery = ({ onContainerReady }) => {
     for (let i = 0; i < 300; i++) {
       const wrapper = document.createElement("div");
       wrapper.className = "img-wrapper";
-
       const img = document.createElement("img");
       const src = getRandomImage();
       img.src = src;
       img.alt = src.split("/").pop().replace(".webp", "");
       wrapper.appendChild(img);
-
       container.appendChild(wrapper);
     }
     // --- 2. VARIABLES ORIGINALES DE TU CÓDIGO ---
@@ -38,20 +37,17 @@ const ImagesGallery = ({ onContainerReady }) => {
     function updatePan(mouseX, mouseY) {
       const maxX = container.offsetWidth - window.innerWidth;
       const maxY = container.offsetHeight - window.innerHeight;
-
       targetX = -((mouseX / window.innerWidth) * maxX * 0.75);
       targetY = -((mouseY / window.innerHeight) * maxY * 0.75);
     }
 
     function animatePan() {
       const ease = 0.035;
-
       currentX += (targetX - currentX) * ease;
       currentY += (targetY - currentY) * ease;
-
       container.style.transform = `translate(${currentX}px, ${currentY}px)`;
 
-      requestAnimationFrame(animatePan);
+      rafRef.current = requestAnimationFrame(animatePan);
     }
 
     // --- 4. EVENTO DE MOUSEMOVE ---
@@ -62,15 +58,18 @@ const ImagesGallery = ({ onContainerReady }) => {
     document.addEventListener("mousemove", onMove);
 
     // --- 5. INICIAR ANIMACIÓN ---
-    requestAnimationFrame(animatePan);
+    rafRef.current = requestAnimationFrame(animatePan);
 
     // Entregamos el contenedor al componente WebGL
     onContainerReady(container);
+
     return () => {
+      document.removeEventListener("mousemove", onMove); // <-- remover listener
+      if (rafRef.current) cancelAnimationFrame(rafRef.current); // <-- cancelar RAF
       // limpiar DOM si el componente se desmonta
       container.innerHTML = "";
     };
-  }, []);
+  }, [onContainerReady]);
   return (
     <div className="viewport">
       <div ref={containerRef} className="container"></div>
